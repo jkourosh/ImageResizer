@@ -13,7 +13,7 @@ def browse():
     
      
 def submit():
-  ret = resize_image(folder_path.get(), int(perV.get()), int(minV.get()))
+  ret = resize_image(folder_path.get(), int(perV.get()), int(minV.get()))  
   openfolder=folder_path.get()+'/resized'
   if ret:
     print('Done!')
