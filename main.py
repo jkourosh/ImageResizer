@@ -1,39 +1,71 @@
+
 from tkinter import filedialog
 from tkinter import *
-from setuptools import Command
 from imageresize import resize_image
-import sys
 
-# def changeMBText(event):
-  # print(minV.get())
-  # print(str((int(minV.get())/1000000))+' MB')
-  # lblMbS.config(text=str((int(minV.get())/1000000))+' MB')
-  # lblMbS.update()
 
-def submit():
-  changeStateText('Resizing...')
-  ret = resize_image(folder_path.get(), int(perV.get()), float(minV.get()),delV.get())
-  if ret:
-    changeStateText('Done !')
-    
-     
-def changeStateText(txt):
-  lblComp.config(text=txt)
-  lblComp.update()
-    
 
-def browse():
-  # Allow user to select a directory and store it in global var
-  # called folder_path
-  global folder_path
-  filename = filedialog.askdirectory()
-  folder_path.set(filename)
+
+
+class ImageResize(Tk):
+    def __init__(self, master):
+        self.master = master
+        self.master.title("Resize Images") 
+        self.master.eval('tk::PlaceWindow . center')
+        self.master.geometry('400x180')
+        self.master.resizable(0, 0)
+        self.lblPers = Label(master,text= 'Percentage :')
+        self.lblPers.place(x=10,y=10)
+        self.txtPer = Entry(master,width=4 ,textvariable=perV )
+        self.txtPer.place(x=82, y=10)
+        self.lblPer = Label(master,text= '%')
+        self.lblPer.place(x=110,y=10)
+        self.lblMin = Label(master,text= 'Min Image Size To Be Reduce:')
+        self.lblMin.place(x=150,y=10)
+        self.txtMin = Entry(master, width=4 ,textvariable= minV)
+        self.txtMin.place(x=315, y=10)
+        self.lblMb = Label(master,text= 'MB')
+        self.lblMb.place(x=340,y=10)
+        self.lblFolder = Label(master,text='Folder :' )
+        self.lblFolder.place(x=10,y=40)
+        self.lblComp = Label(master,text='Select a directory')
+        self.lblComp.place(x=150,y=70)
+        self.txtFolder = Entry(master,textvariable=folder_path, width=40)
+        self.txtFolder.place(x=60,y=40)
+        self.chkDelete = Checkbutton(master, fg='red', text="Delete Original", variable= delV)
+        self.chkDelete.place(x=10,y=70)
+        self.btnFolder = Button(master,text="Browse", command= self.browse)
+        self.btnFolder.place(x=315,y=37)
+        self.btnRun = Button(master,text="Resize", command= self.submit)
+        self.btnRun.place(x=180,y=95)
+        self.btnExit = Button(master,text="Exit", command= master.quit)
+        self.btnExit.place(x=183,y=130)
+
+        
     
- 
-window = Tk()
-window.title("Resize Images")
-window.geometry('400x300')
-window.resizable(0, 0)
+    def changeStateText(self,txt):
+      self.lblComp.config(text=txt)
+      self.lblComp.update()
+    
+    def submit(self):
+      self.changeStateText('Resizing...')
+      ret = resize_image(folder_path.get(), int(perV.get()), float(minV.get()),delV.get())
+      if ret:
+        self.changeStateText('Done !')
+        
+    def browse(self):
+          # Allow user to select a directory and store it in global var
+          # called folder_path
+      global folder_path
+      filename = filedialog.askdirectory()
+      folder_path.set(filename)
+    
+    def greet(self):
+        print("Greetings!")
+
+
+
+root = Tk()
 folder_path = StringVar()
 perV=StringVar()
 minV=StringVar()
@@ -41,38 +73,6 @@ mbV=StringVar()
 delV=BooleanVar()
 perV.set(70)
 minV.set(2)
-lblPer = Label(window,text= 'Percentage :')
-lblPer.place(x=10,y=10)
-txtPer = Entry(window,width=4 ,textvariable=perV )
-txtPer.place(x=90, y=10)
-lblMin = Label(window,text= 'Min Size :')
-lblMin.place(x=135,y=10)
-txtMin = Entry(window, width=4 ,textvariable= minV)
-txtMin.place(x=195, y=10)
-lblMb = Label(window,text= 'MB')
-lblMb.place(x=220,y=10)
-lblFolder = Label(window,text='Folder :' )
-lblFolder.place(x=10,y=40)
-lblComp = Label(window,text='Select a directory')
-lblComp.place(x=150,y=120)
-txtFolder = Entry(window,textvariable=folder_path, width=40)
-txtFolder.place(x=60,y=40)
-chkDelete = Checkbutton(window, fg='red', text="Delete Original", variable= delV)
-chkDelete.place(x=10,y=70)
-btnFolder = Button(window,text="Browse", command=browse)
-btnFolder.place(x=315,y=37)
-btnRun = Button(window,text="Resize", command=submit)
-btnRun.place(x=180,y=80)
-btnExit = Button(window,text="Exit", command=sys.exit)
-btnExit.place(x=170,y=200)
-window.mainloop()
 
-
-
-
-
-
-
-
-
-
+app_gui = ImageResize(root)
+root.mainloop()
