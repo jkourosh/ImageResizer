@@ -32,14 +32,19 @@ class ImageResize(Tk):
         self.lblComp.place(x=150,y=70)
         self.txtFolder = Entry(master,textvariable=folder_path, width=40)
         self.txtFolder.place(x=60,y=40)
+        self.chkSub = Checkbutton(master,  text="Scan Subfolder", variable= subV)
+        self.chkSub.place(x=10,y=70)
         self.chkDelete = Checkbutton(master, fg='red', text="Delete Original", variable= delV)
-        self.chkDelete.place(x=10,y=70)
+        self.chkDelete.place(x=10,y=90)
         self.btnFolder = Button(master,text="Browse", command= self.browse)
         self.btnFolder.place(x=315,y=37)
         self.btnRun = Button(master,text="Resize", command= self.submit)
         self.btnRun.place(x=180,y=95)
         self.btnExit = Button(master,text="Exit", command= master.quit)
         self.btnExit.place(x=183,y=130)
+        self.lblVer = Label(master,text= 'V: 1.2')
+        self.lblVer.place(x=10,y=140)
+     
 
         
     
@@ -49,7 +54,7 @@ class ImageResize(Tk):
     
     def submit(self):
       self.changeStateText('Resizing...')
-      ret = resize_image(folder_path.get(), int(perV.get()), float(minV.get()),delV.get())
+      ret = resize_image(folder_path.get(), int(perV.get()), float(minV.get()),delV.get(),subV.get())
       if ret:
         self.changeStateText('Done !')
         
@@ -71,6 +76,8 @@ perV=StringVar()
 minV=StringVar()
 mbV=StringVar()
 delV=BooleanVar()
+subV=BooleanVar()
+
 perV.set(70)
 minV.set(2)
 
